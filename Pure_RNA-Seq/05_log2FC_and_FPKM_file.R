@@ -112,7 +112,7 @@ ggplot(all_data_plot, aes(x=biased, fill=category))+
   xlab("Gene Expression Category")+
   ylab("Number of Genes")+
   scale_fill_manual("",breaks=c("biased", "extreme","limited"),
-                    labels = c("Fold-change > 1.5","Fold-change > 10","Sex-Limited"),
+                    labels = c("Fold-change > 1.5","Fold-change > 10","Ecotype Limited"),
                     values = c("grey75", "grey45","grey14"))+
   theme_bw()+
   theme(axis.text=element_text(size=20),

@@ -18,3 +18,5 @@ bcftools merge -o snp_for_masking.vcf.gz bl_unique.vcf.gz hl_unique.vcf.gz
 
 # Make an N masked genome per colony
 bedtools maskfasta -fi JCVI_LOUSE_1.0_genomic.fa -bed snp_for_masking.vcf.gz -fo louse_masked_genome.fa 
+
+# Note: can use "snp_for_masking.vcf.gz" for pulling out info with bam read count, using all available positions then

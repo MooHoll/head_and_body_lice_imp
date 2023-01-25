@@ -133,8 +133,15 @@ nrow(res_significant) #47 total differentially expressed genes
 nrow(res_significant[res_significant$log2FoldChange > 1.5,]) #13 upregulated in head
 nrow(res_significant[res_significant$log2FoldChange < -1.5,]) #34 upregulated in body
 
+
+# Goodness of fit
+observed = c(34, 13)    # observed frequencies 
+expected = c(0.5, 0.5)    # expected proportions
+
+chisq.test(x = observed,
+           p = expected) 
+
 #------------------------------------------------------------------
-# heatmap of top differentially expressed
 n=47
 topdiff = head(c(1:nrow(res))[order(res$padj)],n)
 

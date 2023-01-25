@@ -27,6 +27,17 @@ GO_for_genes <- merge(GO_terms, gtf_file, by = "transcript")
 GO_for_genes <- GO_for_genes[complete.cases(GO_for_genes),]
 GO_for_genes <- GO_for_genes[,-1]
 length(unique(GO_for_genes$gene_id)) # 4761 only have annotations
+GO_for_genes <- GO_for_genes[!duplicated(GO_for_genes),]
+
+#---------------------------------------------------
+# Few interesting genes
+BB_limited <- "gene-Phum_PHUM135320"
+HH_high_one <- "gene-Phum_PHUM365700"
+HH_high_two <- "gene-Phum_PHUM494820"
+
+BB_limited_GO <- GO_for_genes[GO_for_genes$"gene_id" %in% BB_limited,]
+HH_high_one_GO <- GO_for_genes[GO_for_genes$"gene_id" %in% HH_high_one,]
+HH_high_two_GO <- GO_for_genes[GO_for_genes$"gene_id" %in% HH_high_two,]
 
 #---------------------------------------------------
 all_gene_expression_data <- read_delim("~/Dropbox/Leicester_postdoc/Projects/lice/RNA_seq_pure/all_gene_expression_data.txt", 
