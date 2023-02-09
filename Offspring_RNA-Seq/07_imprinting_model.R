@@ -84,6 +84,9 @@ model_output$actually_sig <- "no"
 model_output$actually_sig[model_output$sig_in_both == 1 & !model_output$threshold == "unbiased"] <- "yes"
 table(model_output$actually_sig) # 147 genes... means at least one gene passed the sig threshold but is not within the hard threshold of 0.6/0.4
 
+write.table(model_output, file="imp_model_output.txt", sep="\t", quote = F, col.names = T, row.names = F)
+
+
 # be sure the hard threshold has worked
 look <- model_output[model_output$threshold=="unbiased" & model_output$sig_in_both == 1,] # just one gene
 
@@ -119,7 +122,6 @@ for_plot$lineage[is.na(for_plot$lineage)] <- "unbiased"
 table(for_plot$lineage)
 #body     head maternal unbiased 
 #26       29       18      409 
-
 
 # Make a plot
 ggplot(for_plot, aes(x=hb, y=bh, colour =lineage))+
@@ -211,3 +213,10 @@ head_limited <- as.data.frame(head_limited$gene_id)
 colnames(head_limited) <- "gene_id"
 write.table(head_limited, file="head_expressed_limited.txt", sep="\t", quote = F, col.names = T, row.names = F)
 
+# Make final dataframe for supplementary
+head(model_output)
+head(for_plot)
+for_supp <- for_plot[,c(1,5)]
+
+both <- merge(model_output, for_supp) #481
+write.table(both, file="imp_model_output_for_supp.txt", sep="\t", quote = F, col.names = T, row.names = F)
