@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# Using parental RNA-Seq to confirm alt heterozygous snps and annotate with gene name
+# Using parental RNA-Seq to confirm alt homozygous snps and annotate with gene name
 # ------------------------------------------------------------
 
 setwd("~/Dropbox/Leicester_postdoc/Projects/lice/snp_counts")
@@ -10,9 +10,10 @@ library(sqldf)
 library(doBy)
 library(foreach)
 library(doParallel)
+library(reshape2)
 
 # Read in all data
-file.list = list.files(("./"),pattern="*.txt")
+file.list = list.files(("./"),pattern="*counts.txt")
 
 read_file1 <- function(x){
   read_delim(x, "\t", escape_double = F, col_names = F, trim_ws = T)
@@ -27,7 +28,7 @@ names(samples) <- sample_names
 for(i in seq_along(samples)){
   samples[[i]] <- samples[[i]][,c(1,2,3,4,6,7,8,9)]
   colnames(samples[[i]]) <- c("chr", "SNP", "base", "coverage","A","C","G","T")
-  samples[[i]] <- samples[[i]][samples[[i]]$coverage > 5,]
+  samples[[i]] <- samples[[i]][samples[[i]]$coverage > 10,]
   samples[[i]]$A <- substring(samples[[i]]$A, 3)
   samples[[i]]$C <- substring(samples[[i]]$C, 3)
   samples[[i]]$G <- substring(samples[[i]]$G, 3)
@@ -42,26 +43,29 @@ for(i in seq_along(samples)){
 }
 
 # Read in actual called snps
-#bb_snps <- read_delim("../bl_snps.txt", delim = "\t", 
-#                      escape_double = FALSE, col_names = FALSE, 
-#                      trim_ws = TRUE)
-#colnames(bb_snps)<-c("chr","SNP","bb")
+bb_snps <- read_delim("../bl_snps.txt", delim = "\t", 
+                      escape_double = FALSE, col_names = FALSE, 
+                      trim_ws = TRUE)
+colnames(bb_snps)<-c("chr","SNP","hh","bb") 
 
-#hh_snps <- read_delim("../hl_snps.txt", delim = "\t", 
-#                      escape_double = FALSE, col_names = FALSE, 
-#                      trim_ws = TRUE)
-#colnames(hh_snps)<-c("chr","SNP","hh")
+hh_snps <- read_delim("../hl_snps.txt", delim = "\t", 
+                      escape_double = FALSE, col_names = FALSE, 
+                      trim_ws = TRUE)
+colnames(hh_snps)<-c("chr","SNP","bb","hh")
 
-#all <- merge(bb_snps, hh_snps, by=c("chr","SNP"),all=T)
-#nrow(all) # 360525
+# Check for any positions where there is a SNP in both the head and body louse at the same position
+look <- merge(bb_snps, hh_snps, by = c("chr","SNP")) # 0! ok happy days
+
+all_snps <- rbind(hh_snps, bb_snps)
+
 
 # Just use the confirmed SNPs first
-snps_confirmed_with_RNA <- read_delim("~/Dropbox/Leicester_postdoc/Projects/lice/snp_counts_parents/snps_confirmed_with_RNA.txt", 
-                                        delim = "\t", escape_double = FALSE, trim_ws = TRUE)
+#snps_confirmed_with_RNA <- read_delim("~/Dropbox/Leicester_postdoc/Projects/lice/snp_counts_parents/snps_confirmed_with_RNA.txt", 
+#                                        delim = "\t", escape_double = FALSE, trim_ws = TRUE)
 
 # Merge with SNPs that are confirmed and rename columns by matching SNPs
 for(i in seq_along(samples)){
-  samples[[i]] <- merge(samples[[i]], snps_confirmed_with_RNA, by=c("chr","SNP"))
+  samples[[i]] <- merge(samples[[i]], all_snps, by=c("chr","SNP"))
   samples[[i]]$bb_count <- samples[[i]][-ncol(samples[[i]])][cbind(seq_len(nrow(samples[[i]])),
                                            match(samples[[i]]$bb, names(samples[[i]])[-ncol(samples[[i]])]))]
   samples[[i]]$hh_count <- samples[[i]][-ncol(samples[[i]])][cbind(seq_len(nrow(samples[[i]])),

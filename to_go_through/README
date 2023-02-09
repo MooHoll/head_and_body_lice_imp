@@ -1,5 +1,0 @@
-After making two bam files, each containing reads with an informative SNP you can then
-compare the read counts per region/gene of interest in an informative way. Either with
-a fancy imprinting model (if you have a large dataset) or maybe even with something like
-DESeq2 if you have replicates etc. OR a binomial GLM, something with a 1/0 outcome
-which says if expression is biased from one allele or the other.

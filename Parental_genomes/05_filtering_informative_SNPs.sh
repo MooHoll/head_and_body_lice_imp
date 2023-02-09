@@ -30,3 +30,12 @@ subtractBed -header -A -a hl_alt_homozygous_snps.vcf -b bl_alt_homozygous_snps.v
 grep -v ^# hl_unique.vcf | wc -l
 # 204411
 
+# Take parts of the vcf files to later assign alleles in the offspring
+grep -v '#' bl_unique.vcf > bl_no_header.vcf
+grep -v '#' hl_unique.vcf > hl_no_header.vcf
+
+cut -f 1,2,4,5 bl_no_header.vcf > bl_snps.txt # 156114
+cut -f 1,2,4,5 hl_no_header.vcf > hl_snps.txt # 204411
+
+
+

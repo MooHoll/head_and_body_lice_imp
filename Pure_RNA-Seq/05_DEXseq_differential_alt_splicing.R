@@ -36,7 +36,7 @@ SwitchListFiltered <- preFilter(
   geneExpressionCutoff = 0,
   isoformExpressionCutoff = 0,
   removeSingleIsoformGenes = TRUE,
-  dIFcutoff = 0.10) # Filtering only leaves 4 isoforms! Why!
+  dIFcutoff = 0.10) # Filtering only leaves 4 isoforms!
 
 
 # Analyse remaining isoforms with DEXSeq for differntial usage
