@@ -1,4 +1,4 @@
-# Make an N masked genome for each colony
+# Make an N masked genome
 
 module load bedtools/2.28.0
 module load bcftools/1.9
