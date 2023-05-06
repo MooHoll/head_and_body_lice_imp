@@ -114,3 +114,5 @@ setwd("~/Dropbox/Leicester_postdoc/Projects/lice/GO_analysis/imprinted_analysis"
 write.table(all_genes_GO, file="background_all_hybrid_rnaseq_genes.txt", sep="\t",quote = F, col.names = T, row.names = F)
 
 
+# Quick look for a certain genes
+look <- GO_for_genes[GO_for_genes$GO_id=="GO:0000212",]

@@ -115,6 +115,22 @@ sig_genes_with_where_from <- rbind(for_plot_lineage, maternal_genes) # 73 total
 
 # Make a dataframe for plotting
 for_plot <- model_output[,c(1,2,9,15)] # note: 482 genes total tested
+
+ggplot(for_plot, aes(x=avgpropmatexpr, fill=direction_cross))+
+  geom_density(position = "identity", alpha = .6)+
+  xlim(0,1)+
+  theme_bw()+
+  xlab("Proportion maternal expression")+
+  ylab("Density")+
+  geom_vline(xintercept=0.5, linetype="dashed", color = "black")+
+  theme(axis.title = element_text(size=19),
+        axis.text=element_text(size=18),
+        legend.text = element_text(size=16))+
+  scale_fill_manual(breaks=c("bh","hb"),
+                      labels=c("BH Cross", "HB Cross"),
+                      values = c("#F0E442","#D55E00"),
+                      name ="")
+
 for_plot <- dcast(for_plot, gene_id + actually_sig ~ direction_cross, value.var = "avgpropmatexpr")
 
 for_plot <- merge(for_plot, sig_genes_with_where_from, all=T)
