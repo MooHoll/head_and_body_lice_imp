@@ -2,7 +2,7 @@
 # Run imprinting model
 ###-------------------------------------------------------------------
 
-setwd("~/Dropbox/Leicester_postdoc/Projects/lice/snp_counts")
+setwd("~/Dropbox/Research/Leicester_postdoc/Projects/lice/snp_counts")
 
 library(readr)
 library(car)

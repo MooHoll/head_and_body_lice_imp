@@ -2,7 +2,7 @@
 # Using parental RNA-Seq to confirm alt homozygous snps and annotate with gene name
 # ------------------------------------------------------------
 
-setwd("~/Dropbox/Leicester_postdoc/Projects/lice/snp_counts")
+setwd("~/Dropbox/Research/Leicester_postdoc/Projects/lice/snp_counts")
 
 library(readr)
 library(data.table)
@@ -24,7 +24,7 @@ sample_names <- list("bh_1","bh_4","bh_5","bh_6",
                      "hb_1","hb_2","hb_3","hb_5","hb_6")
 names(samples) <- sample_names
 
-# Edit dataframes, coverage > 5 per SNP and make final columns useable
+# Edit dataframes, coverage > 10 per SNP and make final columns useable
 for(i in seq_along(samples)){
   samples[[i]] <- samples[[i]][,c(1,2,3,4,6,7,8,9)]
   colnames(samples[[i]]) <- c("chr", "SNP", "base", "coverage","A","C","G","T")
